@@ -10,7 +10,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "docker-build": "docker build -t back_delliv .",
-    "docker": "docker run -p 5000:3000 back_delliv",
+    "docker": "docker run -p 3000:3000 back_delliv",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
