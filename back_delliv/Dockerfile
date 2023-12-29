@@ -13,5 +13,11 @@ RUN npm install
 # Copiar os arquivos restantes do projeto
 COPY . .
 
+# Generate Prisma client
+RUN npx prisma generate
+
+# Expose the application port
+EXPOSE 3000
+
 # Comando para iniciar a aplicação
 CMD ["npm", "start"]
