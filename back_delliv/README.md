@@ -1,73 +1,108 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Delliv Challenge - Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Este é o backend desenvolvido para o desafio Delliv. Ele fornece uma API RESTful para gerenciar pedidos de clientes. A aplicação foi construída utilizando o framework NestJS, TypeScript, e o banco de dados PostgreSQL através do Prisma.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Configuração do Ambiente
 
-## Description
+Antes de começar, certifique-se de ter o Node.js e o Docker instalados na sua máquina.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+1. **Clone o repositório:**
 
-## Installation
+   ```
+   git clone https://github.com/felipeat07/back_delliv.git
+  ```
 
-```bash
-$ npm install
-```
+2. **Acesse o diretório do projeto:**
 
-## Running the app
+   ```
+   cd back_delliv
+  ```
 
-```bash
-# development
-$ npm run start
+3. **Instale as dependências:**
 
-# watch mode
-$ npm run start:dev
+   ```
+   npm install
+  ```
 
-# production mode
-$ npm run start:prod
-```
+4. **Configure o banco de dados no arquivo .env com suas credenciais::**
 
-## Test
+  ```
+  DATABASE_URL=postgresql://seu-usuario:senha@localhost:5432/seu-banco-de-dados
+  ```
 
-```bash
-# unit tests
-$ npm run test
+  Substitua seu-usuario, senha e seu-banco-de-dados pelos valores correspondentes.
 
-# e2e tests
-$ npm run test:e2e
+5. **Execute as migrações do Prisma para criar o esquema no banco de dados:**
 
-# test coverage
-$ npm run test:cov
-```
+  ```
+  npx prisma migrate dev
+  ```
 
-## Support
+6. **Inicie a apliação:**
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+  ```
+  npm run start 
+  ```
 
-## Stay in touch
+A aplicação estará disponível em http://localhost:3000.
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## EndPoints
 
-## License
+### Autenticação
 
-Nest is [MIT licensed](LICENSE).
+#### POST /auth/login
+
+Autentica um usuário e retorna um token JWT.
+
+Exemplo de requisição:
+
+  ```
+  curl -X POST -H "Content-Type: application/json" -d '{ "email": "seu-email@example.com","password": "sua-senha"}' http://localhost:3000/auth/login
+  ```
+### Pedidos
+
+#### GET /orders
+
+Retorna todos os pedidos.
+
+Exemplo de requisição:
+
+  ```
+  curl -H "Authorization: Bearer SEU_TOKEN_JWT" http://localhost:3000/orders
+  ```
+
+#### POST /orders
+
+Cria um novo pedido.
+
+Exemplo de requisição:
+
+  ```
+  curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer SEU_TOKEN_JWT" -d '{
+  "nomeCliente": "Nome do Cliente",
+  "enderecoEntrega": "Endereço de Entrega",
+  "statusPedido": "Pendente"
+  }' http://localhost:3000/orders
+  ```
+
+#### PUT /orders/:id/status
+
+Atualiza o status de um pedido.
+
+Exemplo de requisição:
+
+  ```
+    curl -X PUT -H "Content-Type: application/json" -H "Authorization: Bearer SEU_TOKEN_JWT" -d '{
+  "status": "Concluído"
+  }' http://localhost:3000/orders/1/status
+  ```
+
+### Testes Unitários
+
+A aplicação possui testes unitários desenvolvidos com o framework Jest. Para executar os testes, utilize o seguinte comando:
+
+  ```
+    npm test
+  ```
+
+Esse comando irá executar todos os testes unitários definidos na aplicação.
