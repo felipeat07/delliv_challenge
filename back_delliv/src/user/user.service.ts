@@ -1,3 +1,5 @@
+// user.service.ts
+
 import { Injectable } from '@nestjs/common';
 import { prisma } from '../../prisma/prisma.service';
 
@@ -9,6 +11,14 @@ export class UserService {
         name: userData.name,
         email: userData.email,
         password: userData.password,
+      },
+    });
+  }
+
+  async findById(id: string) {
+    return prisma.user.findUnique({
+      where: {
+        id: parseInt(id), // Certifique-se de converter para número, se necessário
       },
     });
   }
