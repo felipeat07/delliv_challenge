@@ -23,6 +23,7 @@ const authSlice = createSlice({
       state.error = null;
     },
     loginSuccess(state, action: PayloadAction<string>) {
+      state.isAuthenticated = true;
       state.loading = false;
       state.token = action.payload;
     },

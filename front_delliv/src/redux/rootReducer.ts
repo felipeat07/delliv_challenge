@@ -1,9 +1,10 @@
 import { combineReducers } from 'redux';
-import authReducer from './authReducer';
+import authSlice from './authSlice';
+import pedidoSlice from './pedidoSlice';
 
 const rootReducer = combineReducers({
-  auth: authReducer,
-  // ...outros redutores se você tiver
+  auth: authSlice,
+  pedidos: pedidoSlice
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
